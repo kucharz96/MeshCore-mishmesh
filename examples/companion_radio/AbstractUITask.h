@@ -54,11 +54,11 @@ public:
     if (!hasConnection()) notify(UIEventType::channelMessage);
   }
   void onQueueSizeChanged(int count) override { msgRead(count); }
-  void onACKRecv(uint32_t crc) override { (void)crc; notify(UIEventType::ack); }
   void onDiscoveredContact(ContactInfo &contact, bool is_new, uint8_t path_len,
                            const uint8_t* path) override {
     (void)contact; (void)path_len; (void)path;
-    if (!is_new) notify(UIEventType::newContactMessage);
+    (void)is_new;
+    if (!hasConnection()) notify(UIEventType::newContactMessage);
   }
   virtual void notify(UIEventType t = UIEventType::none) = 0;
   virtual void loop() = 0;
