@@ -53,6 +53,7 @@ public:
   virtual bool supportsOrientation() const { return false; }
   virtual void setDisplayRotation(int quarters) { (void)quarters; }
   // [/mishmesh]
+  virtual void forceFullRefresh() {} // next refresh will be full for eink
   virtual void turnOn() = 0;
   virtual void turnOff() = 0;
   virtual void clear() = 0;

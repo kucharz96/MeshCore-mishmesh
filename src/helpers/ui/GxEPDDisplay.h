@@ -48,6 +48,12 @@
 #endif
 // [/mishmesh]
 
+#ifndef EINK_MAX_PARTIAL_REFRESH
+  // 60 to prevent ghosting when refreshing every minute ...
+  // set to -1 to disable the counter
+  #define EINK_MAX_PARTIAL_REFRESH -1
+#endif
+
 class GxEPDDisplay : public DisplayDriver {
 public:
   static const int MAX_UI_SCALE = 2;   // [mishmesh] 3x leaves too little canvas
@@ -73,6 +79,8 @@ private:
   uint16_t _curr_color;
   CRC32 display_crc;
   int last_display_crc_value = 0;
+  int _cycles_before_full_refresh;
+  int max_partial_refresh = EINK_MAX_PARTIAL_REFRESH; // so this can be changed by an option after
 
   // [mishmesh] Scale both edges, then subtract. Scaling w/h independently of x/y
   // truncates twice, so abutting rects leave 1px seams on the panel.
@@ -104,6 +112,8 @@ public:
   // callback through so the UI can keep sampling buttons meanwhile.
   void setBusyPoll(void (*cb)(const void*), const void* ctx) override;
   // [/mishmesh]
+  void forceFullRefresh() override { _cycles_before_full_refresh = 0; };
+  void resetPartialRefreshCounter() { _cycles_before_full_refresh = max_partial_refresh; };
   void turnOn() override;
   void turnOff() override;
   void clear() override;
