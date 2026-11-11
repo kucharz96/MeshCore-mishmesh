@@ -18,6 +18,15 @@ jobs:
         uses: ./.github/actions/setup-build-environment
       - name: Build Wio Tracker L1 Pro BLE MishMesh
         run: pio run -e WioTrackerL1_companion_radio_ble_mishmesh
+      - name: Generate Wio L1 BLE UF2
+        run: pio run -e WioTrackerL1_companion_radio_ble_mishmesh -t create_uf2
+      - name: Upload Wio L1 BLE UF2
+        uses: actions/upload-artifact@v4
+        with:
+          name: wio-l1-mishmesh-meshcore-1.18-uf2
+          path: .pio/build/WioTrackerL1_companion_radio_ble_mishmesh/firmware.uf2
+          if-no-files-found: error
+          retention-days: 14
       - name: Upload Wio L1 BLE firmware (OTA zip)
         uses: actions/upload-artifact@v4
         with:
