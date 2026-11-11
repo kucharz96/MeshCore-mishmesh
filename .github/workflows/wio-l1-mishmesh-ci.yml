@@ -18,3 +18,10 @@ jobs:
         uses: ./.github/actions/setup-build-environment
       - name: Build Wio Tracker L1 Pro BLE MishMesh
         run: pio run -e WioTrackerL1_companion_radio_ble_mishmesh
+      - name: Upload Wio L1 BLE firmware (OTA zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: wio-l1-mishmesh-meshcore-1.18
+          path: .pio/build/WioTrackerL1_companion_radio_ble_mishmesh/firmware.zip
+          if-no-files-found: error
+          retention-days: 14
