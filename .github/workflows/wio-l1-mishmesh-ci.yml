@@ -1,0 +1,31 @@
+name: MishMesh Wio L1 integration check
+
+on:
+  push:
+    branches:
+      - integration/meshcore-1.18
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-wio-l1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PlatformIO
+        uses: ./.github/actions/setup-build-environment
+      - name: Build Wio Tracker L1 Pro BLE MishMesh
+        run: pio run -e WioTrackerL1_companion_radio_ble_mishmesh
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PlatformIO
+        uses: ./.github/actions/setup-build-environment
+      - name: Run native unit tests
+        run: pio test -e native -e native_kiss_modem -vv
