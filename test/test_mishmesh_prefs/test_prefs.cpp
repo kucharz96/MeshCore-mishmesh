@@ -5,6 +5,13 @@
 #include <string.h>
 #include "../../examples/companion_radio/NodePrefs.h"
 
+// The host-only serializer test does not link the embedded radio driver.
+// MeshCore 1.18 added virtual KeyValueStore accessors on CommonRadioPrefs;
+// provide test-local implementations (real firmware links CommonRadioPrefs.cpp).
+bool CommonRadioPrefs::setByKey(const char*, const char*) { return false; }
+bool CommonRadioPrefs::getByKey(const char*, char*, size_t) { return false; }
+
+
 namespace {
 
 // std::string-backed Stream. The mock Print only stubs print(), so the numeric
