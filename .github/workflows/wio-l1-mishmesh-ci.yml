@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - build/wio-l1-mishmesh-1.18-uf2
   workflow_dispatch:
 
 permissions:
