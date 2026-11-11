@@ -1198,7 +1198,7 @@ bool MyMesh::mishmeshSendCli(const uint8_t* pubkey, const char* cmd) {
   if (!recipient) return false;
   uint32_t msg_timestamp = getRTCClock()->getCurrentTimeUnique();  // node RTC: avoid replay-protection trip
   uint32_t est_timeout;
-  int result = sendCommandData(*recipient, msg_timestamp, 0, cmd, est_timeout);
+  int result = sendCommandData(*recipient, msg_timestamp, 0, TXT_TYPE_CLI_DATA, cmd, est_timeout);
   return result != MSG_SEND_FAILED;
 }
 
