@@ -403,7 +403,8 @@ static bool mm_channelEmpty(const mesh::GroupChannel& ch) {
 int BaseChatMesh::searchChannelsByHash(const uint8_t* hash, mesh::GroupChannel dest[], int max_matches) {
   int n = 0;
   for (int i = 0; i < MAX_GROUP_CHANNELS && n < max_matches; i++) {
-    if (mm_channelEmpty(channels[i].channel)) continue;  // [mishmesh] skip cleared slots
+    // MeshCore 1.18 considers unnamed slots empty; MishMesh also rejects zero-secret slots.
+    if (channels[i].name[0] == 0 || mm_channelEmpty(channels[i].channel)) continue;
     if (channels[i].channel.hash[0] == hash[0]) {
       dest[n++] = channels[i].channel;
     }
