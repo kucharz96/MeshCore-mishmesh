@@ -1,4 +1,4 @@
-name: MishMesh Wio L1 integration check
+name: MishMesh Wio L1 build (official packaging)
 
 on:
   pull_request:
@@ -16,24 +16,17 @@ jobs:
   build-wio-l1:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup PlatformIO
         uses: ./.github/actions/setup-build-environment
-      - name: Build Wio Tracker L1 Pro BLE MishMesh
-        run: pio run -e WioTrackerL1_companion_radio_ble_mishmesh
-      - name: Generate Wio L1 BLE UF2
-        run: pio run -e WioTrackerL1_companion_radio_ble_mishmesh -t create_uf2
-      - name: Upload Wio L1 BLE UF2
-        uses: actions/upload-artifact@v4
-        with:
-          name: wio-l1-mishmesh-meshcore-1.18-uf2
-          path: .pio/build/WioTrackerL1_companion_radio_ble_mishmesh/firmware.uf2
-          if-no-files-found: error
-          retention-days: 14
-      - name: Upload Wio L1 BLE firmware (OTA zip)
+      - name: Build and package Wio Tracker L1 Pro BLE via original MishMesh build.sh
+        run: bash build.sh build-firmware WioTrackerL1_companion_radio_ble_mishmesh
+      - name: Upload UF2 and OTA ZIP
         uses: actions/upload-artifact@v4
         with:
           name: wio-l1-mishmesh-meshcore-1.18
-          path: .pio/build/WioTrackerL1_companion_radio_ble_mishmesh/firmware.zip
+          path: |
+            out/WioTrackerL1_companion_radio_ble_mishmesh_*.uf2
+            out/WioTrackerL1_companion_radio_ble_mishmesh_*.zip
           if-no-files-found: error
           retention-days: 14
